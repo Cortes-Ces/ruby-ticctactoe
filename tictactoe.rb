@@ -14,8 +14,23 @@ class TicTacToe
         end
     end
 
+    # Make move on specified row and column
+    def make_move (row, col)
+        if @board[row - 1][col - 1] == ' ' # Check if chosen spot empty
+            @board[row - 1][col-1] = @current_player # Place player symbol on board
+            switch_player # Switch player for next turn
+        else
+            puts "Invalid move! Try again" # Display msg if spot not empty
+        end
+    end
+
+    # Switch current player between X and O
+    def switch_player
+        @current_player = (@current_player == 'X') ?  'O' : 'X'
+    end
 
 end
+
 
 test = TicTacToe.new
 test.display_board
