@@ -29,6 +29,25 @@ class TicTacToe
         @current_player = (@current_player == 'X') ?  'O' : 'X'
     end
 
+    def check_winner
+        # Implement logic to check for winner
+        # Return 'X', 'O' or Nil if no winner
+    end
+
+    def game_over?
+        # return true or false
+        if check_winner
+            return true
+        end
+
+        # Check if board is full
+        @board.each do |row|
+            return false if row.include?(' ')
+        end
+        
+        # If board is full and no winner then return true
+        return true
+    end
 end
 
 
