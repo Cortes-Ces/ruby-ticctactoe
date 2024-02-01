@@ -30,8 +30,26 @@ class TicTacToe
     end
 
     def check_winner
-        # Implement logic to check for winner
         # Return 'X', 'O' or Nil if no winner
+
+        # Check rows
+        @board.each do |row|
+            return row[0] if row.uniq.length == 1 && row[0] != ' '
+        end
+
+        # Check columns
+        @board.transpose.each do |col|
+            return col[0] if col.uniq.length == 1 && col[0] != ' '
+        end
+
+        # Check diagonals
+        if @board[0][0] == @board[1][1] && @board[1][1] == @board[2][2] && @board[1][1] != ' '
+            return @board[1][1]
+        elsif @board[0][2] == @board[1][1] && @board[1][1] == @board[2][0] && @board[1][1] != ' '
+            return @board[1][1]
+        end
+
+        return nil # If no winner found, return nil
     end
 
     def game_over?
