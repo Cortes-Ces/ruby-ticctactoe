@@ -69,5 +69,18 @@ class TicTacToe
 end
 
 
-test = TicTacToe.new
-test.display_board
+game = TicTacToe.new
+
+until game.game_over?
+    # Display current board
+    game.display_board 
+    puts  "Player #{@current_player}'s turn. Enter row (1-3) and column (1-3):"
+    row = gets.chomp.to_i
+    col = gets.chomp.to_i
+
+    # Make move based on user input
+    game.make_move(row, col)
+end
+
+# Display results
+puts "Game over! #{game.check_winner'|| 'It\'s a draw!'}"
