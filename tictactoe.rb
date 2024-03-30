@@ -80,7 +80,6 @@ class TicTacToe
 
     nil
   end
-
 end
 
 # Play tictactoe
@@ -98,4 +97,5 @@ until game.game_over?
 end
 
 # Display results
+game.display_board
 puts "Game over! #{game.check_winner || "It\'s a draw!"}"
