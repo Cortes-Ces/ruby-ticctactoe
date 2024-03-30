@@ -1,86 +1,101 @@
+# frozen_string_literal: true
+
+# TicTacToe class
 class TicTacToe
-    # Initialize the game board and set current player to 'X'
-    def initialize  
-        @board = Array.new(3) { Array.new(3, ' ') }
-        @current_player = 'X'
+  # Initialize
+  def initialize
+    @board = Array.new(3) { Array.new(3, ' ') }
+    @current_player = 'X'
+  end
+  # Display current state of game board
+
+  def display_board
+    # Display column numbers
+    puts ' 1 2 3'
+    @board.each_with_index do |row, idx|
+      # Display each row with '|' as separator
+      puts "#{idx + 1} #{row.join('|')}"
+      puts '  -----'
     end
+  end
 
-    # Display current state of game board
-    def display_board
-        puts " 1 2 3" # Display column numbers
-        @board.each_with_index do |row, idx|
-            puts "#{idx + 1} #{row.join('|')}" # Display each row with '|' as separator
-            puts "  -----"
-        end
+  # Make move on specified row and column
+  def make_move(row, col)
+    # Check if chosen spot is empty
+    if @board[row - 1][col - 1] == ' '
+      # Place player symbol on board
+      @board[row - 1][col - 1] = @current_player
+      # Switch player
+      switch_player
+    else
+      # Display msg if spot is not empty
+      puts 'Invalid move! Try again'
     end
+  end
 
-    # Make move on specified row and column
-    def make_move (row, col)
-        if @board[row - 1][col - 1] == ' ' # Check if chosen spot empty
-            @board[row - 1][col-1] = @current_player # Place player symbol on board
-            switch_player # Switch player for next turn
-        else
-            puts "Invalid move! Try again" # Display msg if spot not empty
-        end
+  # Switch current player with X and O
+  def switch_player
+    @current_player = @current_player == 'X' ? 'O' : 'X'
+  end
+
+  # Check winner Return 'X', 'O' or Nil if no winner
+  def check_winner
+    check_rows || check_columns || check_diagonal1 || check_diagonal2 || nil
+  end
+
+  def game_over?
+    winner = check_winner
+    return true if winner
+    return true if @board.all? { |row| row.all? { |cell| cell != ' ' } }
+
+    false
+  end
+
+  private
+
+  def check_rows
+    @board.each do |row|
+      return row[0] if row.uniq.length == 1 && row[0] != ' '
     end
+    nil
+  end
 
-    # Switch current player between X and O
-    def switch_player
-        @current_player = (@current_player == 'X') ?  'O' : 'X'
+  def check_columns
+    @board.transpose.each do |col|
+      return col[0] if col.uniq.length == 1 && col[0] != ' '
     end
+    nil
+  end
 
-    def check_winner
-        # Return 'X', 'O' or Nil if no winner
+  def check_diagonal1
+    diagonal1 = [@board[0][0], @board[1][1], @board[2][2]]
+    return diagonal1[0] if diagonal1.uniq.length == 1 && diagonal1[0] != ' '
 
-        # Check rows
-        @board.each do |row|
-            return row[0] if row.uniq.length == 1 && row[0] != ' '
-        end
+    nil
+  end
 
-        # Check columns
-        @board.transpose.each do |col|
-            return col[0] if col.uniq.length == 1 && col[0] != ' '
-        end
+  def check_diagonal2
+    diagonal2 = [@board[0][2], @board[1][1], @board[2][0]]
+    return diagonal2[0] if diagonal2.uniq.length == 1 && diagonal2[0] != ' '
 
-        # Check diagonals
-        if @board[0][0] == @board[1][1] && @board[1][1] == @board[2][2] && @board[1][1] != ' '
-            return @board[1][1]
-        elsif @board[0][2] == @board[1][1] && @board[1][1] == @board[2][0] && @board[1][1] != ' '
-            return @board[1][1]
-        end
+    nil
+  end
 
-        return nil # If no winner found, return nil
-    end
-
-    def game_over?
-        # return true or false
-        if check_winner
-            return true
-        end
-
-        # Check if board is full
-        @board.each do |row|
-            return false if row.include?(' ')
-        end
-        
-        # If board is full and no winner then return true
-        return true
-    end
 end
 
-
+# Play tictactoe
 game = TicTacToe.new
 
 until game.game_over?
-    # Display current board
-    game.display_board 
-    puts  "Player #{@current_player}'s turn. Enter row (1-3) and column (1-3):"
-    row = gets.chomp.to_i
-    col = gets.chomp.to_i
+  game.display_board
+  puts "Player #{@current_player}'s turn. Enter row (1-3) and column (1-3):"
+  row = gets.chomp.to_i
+  col = gets.chomp.to_i
 
-    # Make move based on user input
-    game.make_move(row, col)
+  # Make move based on user input
+  game.make_move(row, col)
+
 end
 
 # Display results
-puts "Game over! #{game.check_winner'|| 'It\'s a draw!'}"
+puts "Game over! #{game.check_winner || "It\'s a draw!"}"
